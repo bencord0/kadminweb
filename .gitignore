@@ -1,0 +1,3 @@
+# Files with secrets in them
+.env
+devapp.keytab
