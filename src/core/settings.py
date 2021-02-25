@@ -131,6 +131,7 @@ STATIC_ROOT = 'static'
 
 AUTH_SERVICE_NAME = os.getenv('AUTH_SERVICE_NAME')
 AUTH_SERVICE_REALM = os.getenv('AUTH_SERVICE_REALM')
+KRB5_KTNAME = os.getenv('KRB5_KTNAME', '/etc/krb5.keytab')
 
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'

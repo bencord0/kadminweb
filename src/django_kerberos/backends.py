@@ -1,5 +1,6 @@
 import kerberos
 import logging
+import subprocress
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -30,3 +31,16 @@ class KerberosBackend(ModelBackend):
         except kerberos.BasicAuthError:
             logging.exception("username/password mismatch")
             return False
+
+    def set_password(self, username, password):
+        subprocess.run(
+            [
+                'kadmin',
+                '-r', settings.AUTH_SERVICE_REALM,
+                '-p', settings.AUTH_SERVICE_NAME,
+                '-kt', settings.KRB5_KTNAME,
+                'change_password', '-pw', password, username,
+            ],
+            timeout=1,
+            check=True,
+        )

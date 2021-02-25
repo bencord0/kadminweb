@@ -22,4 +22,11 @@ class KerberosUser(AbstractUser):
     objects = KerberosUserManager()
 
     def set_password(self, raw_password):
-        raise NotImplementedError("Password management handled by kerberos")
+        from .backends import KerberosBackend
+        backend = KerberosBackend()
+        return backend.set_password(self.username, raw_password)
+
+    def check_password(self, raw_password):
+        from .backends import KerberosBackend
+        backend = KerberosBackend()
+        return backend.check_password(self.username, raw_password)
