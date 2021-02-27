@@ -13,14 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
+from secrets import token_urlsafe
 
 from kadminweb import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('admin/', admin.site.urls),
     path('accounts/', include('django_kerberos.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
+
+if getattr(settings, 'ENABLE_ADMIN', False):
+    urlpatterns.append(path(f'{token_urlsafe()}/', admin.site.urls))

@@ -135,3 +135,6 @@ KRB5_KTNAME = os.getenv('KRB5_KTNAME', '/etc/krb5.keytab')
 
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
+
+ENABLE_ADMIN = os.getenv('ENABLE_ADMIN', 'False') == 'True'
+FREE_SIGNUP = os.getenv('FREE_SIGNUP', 'False') == 'True'
