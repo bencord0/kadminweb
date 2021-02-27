@@ -23,9 +23,10 @@ extras_require = {
 
 setup(
     name='kadminweb',
-    version='0.1.0',
+    version='0.1.1',
     author='Ben Cordero',
     author_email='bencord0@condi.me',
+    license='MIT',
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
     package_data={
