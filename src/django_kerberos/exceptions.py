@@ -1,0 +1,2 @@
+class KerberosManagementError(Exception):
+    pass

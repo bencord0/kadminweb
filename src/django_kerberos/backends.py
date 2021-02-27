@@ -6,6 +6,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 
+from .exceptions import KerberosManagementError
+
 
 class KerberosBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
@@ -41,7 +43,7 @@ class KerberosBackend(ModelBackend):
                 '-kt', settings.KRB5_KTNAME,
                 'change_password', '-pw', password, username,
             ],
-            timeout=1,
+            timeout=5,
             check=True,
         )
 
@@ -59,20 +61,23 @@ class KerberosBackend(ModelBackend):
         )
 
     def create_principal(self, username):
-        subprocess.run(
-            [
-                'kadmin',
-                '-r', settings.AUTH_SERVICE_REALM,
-                '-p', settings.AUTH_SERVICE_NAME,
-                '-kt', settings.KRB5_KTNAME,
-                'add_principal', '-nokey',
-                '+requires_preauth',
-                '-allow_svr',
-                username,
-            ],
-            timeout=1,
-            check=True,
-        )
+        try:
+            subprocess.run(
+                [
+                    'kadmin',
+                    '-r', settings.AUTH_SERVICE_REALM,
+                    '-p', settings.AUTH_SERVICE_NAME,
+                    '-kt', settings.KRB5_KTNAME,
+                    'add_principal', '-nokey',
+                    '+requires_preauth',
+                    '-allow_svr',
+                    username,
+                ],
+                timeout=1,
+                check=True,
+            )
+        except subprocess.CalledProcessError:
+            raise KerberosManagementError
 
     def delete_principal(self, username):
         if not username:
