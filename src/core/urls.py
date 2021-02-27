@@ -21,7 +21,7 @@ from secrets import token_urlsafe
 from kadminweb import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.IndexView.as_view(), name='index'),
     path('accounts/', include('django_kerberos.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
