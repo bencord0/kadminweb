@@ -1,0 +1,9 @@
+<h2>Account Deactivation</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Deactivate my account</button>
+</form>
+
+<a href="/">Go home</a>

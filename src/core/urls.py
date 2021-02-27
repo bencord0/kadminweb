@@ -21,5 +21,6 @@ from kadminweb import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django_kerberos.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
