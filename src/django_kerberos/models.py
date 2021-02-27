@@ -1,14 +1,19 @@
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 
+from .exceptions import KerberosManagementError
+
 
 class KerberosUserManager(UserManager):
     def _create_user(self, username, email, password, **extra_fields):
         user = self.model(username=username, email=email, **extra_fields)
 
-        user.create_principal()
-        user.set_password(password)
+        try:
+            user.create_principal()
+        except KerberosManagementError:
+            pass
 
+        user.set_password(password)
         user.save(using=self._db)
         return user
 
