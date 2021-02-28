@@ -127,7 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
+STATIC_ROOT = os.getenv('STATIC_ROOT', 'staticfiles')
 
 AUTH_SERVICE_NAME = os.getenv('AUTH_SERVICE_NAME')
 AUTH_SERVICE_REALM = os.getenv('AUTH_SERVICE_REALM')
