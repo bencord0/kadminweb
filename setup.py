@@ -23,7 +23,7 @@ extras_require = {
 
 setup(
     name='kadminweb',
-    version='0.1.1',
+    version='0.1.2',
     author='Ben Cordero',
     author_email='bencord0@condi.me',
     license='MIT',
