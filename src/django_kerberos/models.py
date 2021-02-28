@@ -1,10 +1,12 @@
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
+from django.views.decorators.debug import sensitive_variables
 
 from .exceptions import KerberosManagementError
 
 
 class KerberosUserManager(UserManager):
+    @sensitive_variables("password")
     def _create_user(self, username, email, password, **extra_fields):
         user = self.model(username=username, email=email, **extra_fields)
 
@@ -30,6 +32,7 @@ class KerberosUser(AbstractUser):
 
     objects = KerberosUserManager()
 
+    @sensitive_variables("raw_password")
     def set_password(self, raw_password):
         from .backends import KerberosBackend
         backend = KerberosBackend()
@@ -40,6 +43,7 @@ class KerberosUser(AbstractUser):
         backend = KerberosBackend()
         return backend.scramble_password(self.username)
 
+    @sensitive_variables("raw_password")
     def check_password(self, raw_password):
         from .backends import KerberosBackend
         backend = KerberosBackend()

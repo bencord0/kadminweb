@@ -5,11 +5,13 @@ import subprocess
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
+from django.views.decorators.debug import sensitive_variables
 
 from .exceptions import KerberosManagementError
 
 
 class KerberosBackend(ModelBackend):
+    @sensitive_variables("password")
     def authenticate(self, request, username=None, password=None, **kwargs):
         if not self.check_password(username, password):
             return None
@@ -23,6 +25,7 @@ class KerberosBackend(ModelBackend):
 
         return user
 
+    @sensitive_variables("password")
     def check_password(self, username, password):
         try:
             return kerberos.checkPassword(
@@ -34,6 +37,7 @@ class KerberosBackend(ModelBackend):
             # logging.exception("username/password mismatch")
             return False
 
+    @sensitive_variables("password")
     def set_password(self, username, password):
         subprocess.run(
             [
