@@ -129,8 +129,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.getenv('STATIC_ROOT', 'staticfiles')
 
-AUTH_SERVICE_NAME = os.getenv('AUTH_SERVICE_NAME')
-AUTH_SERVICE_REALM = os.getenv('AUTH_SERVICE_REALM')
+AUTH_SERVICE_NAME = os.getenv('AUTH_SERVICE_NAME', '')
+AUTH_SERVICE_REALM = os.getenv('AUTH_SERVICE_REALM', '')
 KRB5_KTNAME = os.getenv('KRB5_KTNAME', '/etc/krb5.keytab')
 
 LOGIN_REDIRECT_URL = 'index'

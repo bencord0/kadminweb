@@ -30,8 +30,8 @@ class KerberosBackend(ModelBackend):
         try:
             return kerberos.checkPassword(
                 username, password,
-                settings.AUTH_SERVICE_NAME,
-                settings.AUTH_SERVICE_REALM,
+                getattr(settings, 'AUTH_SERVICE_NAME', 'http/app@example.com'),
+                getattr(settings, 'AUTH_SERVICE_REALM', 'example.com'),
                 True)
         except kerberos.BasicAuthError:
             # logging.exception("username/password mismatch")
@@ -42,9 +42,9 @@ class KerberosBackend(ModelBackend):
         subprocess.run(
             [
                 'kadmin',
-                '-r', settings.AUTH_SERVICE_REALM,
-                '-p', settings.AUTH_SERVICE_NAME,
-                '-kt', settings.KRB5_KTNAME,
+                '-p', getattr(settings, 'AUTH_SERVICE_NAME', 'http/app@example.com'),
+                '-r', getattr(settings, 'AUTH_SERVICE_REALM', 'example.com'),
+                '-kt', getattr(settings, 'KRB5_KTNAME', '/etc/krb5.keytab'),
                 'change_password', '-pw', password, username,
             ],
             timeout=5,
@@ -55,9 +55,9 @@ class KerberosBackend(ModelBackend):
         subprocess.run(
             [
                 'kadmin',
-                '-r', settings.AUTH_SERVICE_REALM,
-                '-p', settings.AUTH_SERVICE_NAME,
-                '-kt', settings.KRB5_KTNAME,
+                '-p', getattr(settings, 'AUTH_SERVICE_NAME', 'http/app@example.com'),
+                '-r', getattr(settings, 'AUTH_SERVICE_REALM', 'example.com'),
+                '-kt', getattr(settings, 'KRB5_KTNAME', '/etc/krb5.keytab'),
                 'change_password', '-randkey', username,
             ],
             timeout=1,
@@ -69,9 +69,9 @@ class KerberosBackend(ModelBackend):
             subprocess.run(
                 [
                     'kadmin',
-                    '-r', settings.AUTH_SERVICE_REALM,
-                    '-p', settings.AUTH_SERVICE_NAME,
-                    '-kt', settings.KRB5_KTNAME,
+                    '-p', getattr(settings, 'AUTH_SERVICE_NAME', 'http/app@example.com'),
+                    '-r', getattr(settings, 'AUTH_SERVICE_REALM', 'example.com'),
+                    '-kt', getattr(settings, 'KRB5_KTNAME', '/etc/krb5.keytab'),
                     'add_principal', '-nokey',
                     '+requires_preauth',
                     '-allow_svr',
@@ -90,9 +90,9 @@ class KerberosBackend(ModelBackend):
         subprocess.run(
             [
                 'kadmin',
-                '-r', settings.AUTH_SERVICE_REALM,
-                '-p', settings.AUTH_SERVICE_NAME,
-                '-kt', settings.KRB5_KTNAME,
+                '-p', getattr(settings, 'AUTH_SERVICE_NAME', 'http/app@example.com'),
+                '-r', getattr(settings, 'AUTH_SERVICE_REALM', 'example.com'),
+                '-kt', getattr(settings, 'KRB5_KTNAME', '/etc/krb5.keytab'),
                 'delete_principal', username,
             ],
             timeout=1,
